@@ -6,13 +6,12 @@
 ::	05/03/2021	Script Created via bat_template
 ::			Help Section Added
 ::	10/03/2021	Added basic parse for switches
+::	17/03/2021	Base function implemented
 
 ::To Do
 ::
-::	
-::	Implement base fuctionality
-::		Handle variable inputs
-::		Use variables in main function
+::	change sed to make a back up
+::	Verify inputs??
 
 @echo off
 setlocal enableextensions enabledelayedexpansion
@@ -23,7 +22,7 @@ if "%*" EQU "" (
 	echo No Input provided
 	GOTO END
 )
-
+		@echo on
 :parse
 set in1=%1
 if "%in1:~0,1%" NEQ "-" GOTO endparse
@@ -33,16 +32,18 @@ SHIFT
 GOTO parse
 
 :endparse
+	set IPaddr=%1
+	set Configfile=%2
+	set Configline=%3
+	set Configvalue='%4'
 
 :MAIN
 	if "%debug%" EQU "Y" (
 		echo Debugging by echoing commands
 		@echo on
 	)
-	set /P OVPN_PASS="Set OpenVPN password here>"
-	set OVPN_PASS='%OVPN_PASS%'
-	echo Now The OWL's admin password
-	ssh admin@%IP_ADDR% "OVPN_PASS=%OVPN_PASS% && sudo sed -i  '/OPENVPN2_PASSWORD=/ s/.*/'"OPENVPN2_PASSWORD=\'$OVPN_PASS\'"'/g' /etc/settings.openvpn"
+	echo SSHing into OWL admin password needed
+	ssh admin@!IPaddr! "Configvalue=!Configvalue! && sudo sed -i  '/!Configline!/ s/.*/'"!Configline!=\'$Configvalue\'"'/g' /etc/!Configfile!"
 
 	GOTO END
 
@@ -51,7 +52,7 @@ GOTO parse
 	Echo This Script was created to get around the forbiden characters issue on the Hirschmann OWL 4G
 	Echo Usage:
 	Echo OWL_Config_edit IPaddress Configfile Configline value
-	Echo IPaddress = IP address of the OWL 4G eg 192.168.1.1
+	Echo IPaddr = IP address of the OWL 4G eg 192.168.1.1
 	Echo Configfile = config file in the OWL 4G to change eg settings.openvpn
 	Echo Configline = Line in the configuration file to change eg OPENVPN2_PASSWORD
 	Echo value = value that will be added to the configuration line eg mypassword
