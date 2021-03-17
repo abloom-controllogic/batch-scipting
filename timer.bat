@@ -12,7 +12,7 @@
 ::
 ::	Fill in help section
 ::	Implement base fuctionality
-::		Compare difference between start and end times
+::		
 ::	Implement check for too many arguments being supplied
 
 @echo off
@@ -41,21 +41,54 @@ GOTO parse
 		echo Debugging by echoing commands
 		@echo on
 	)
-	::Write your scripting here
+
 	::Store current time
-	set Starttime=%TIME%
+		set Starttime=%TIME%
 	::Call function to be timed
-	CALL %1 %2 %3 %4 %5 %6 %7 %8 %9
+		CALL %1 %2 %3 %4 %5 %6 %7 %8 %9
 	:: Store time again
-	set Endtime=%TIME%
-	echo %Starttime% 
-	echo %Endtime%
+		set Endtime=%TIME%
 	::Workout diffrence
-	echo xxx time taken
+		set /A Milsecdif=(%Endtime:~9,2%-%Starttime:~9,2%)*10
+		if %Milsecdif% LSS 0 (
+			set /A Milsecdif=%Milsecdif%+1000
+			set /A Secdif=%Endtime:~6,2%-%Starttime:~6,2%-1
+		) ELSE (
+			set /A Secdif=%Endtime:~6,2%-%Starttime:~6,2%
+		)
+		if %Secdif% LSS 0 (
+			set /A Secdif=%Secdif%+60
+			set /A Mindif=%Endtime:~3,2%-%Starttime:~3,2%-1
+		) ELSE (
+			set /A Mindif=%Endtime:~3,2%-%Starttime:~3,2%
+		)
+		if %Mindif$ LSS 0 (
+			set /A Mindif=%Mindif%+60
+			set /A Hourdif=%Endtime:~0,2%-%Starttime:~0,2%-1
+		) ELSE (
+			set /A Hourdif=%Endtime:~0,2%-%Starttime:~0,2%
+		)
+		if %Hourdif% LSS 0 (
+			set /A Hourdif=%Hourdif%+24
+		)
+
+
+
+
+	:COMPLETE
+		set Output="%Hourdif%h %Mindif%m %Secdif%s %Milsecdif%ms has elasped"
+
+
+	echo !Output:^"=!
 	GOTO END
 
 :HELP
-	Echo Help Section not yet implemented
+	Echo Timer function to time time taken by other functions
+	Echo Usage: timer myfunction arg1 arg2 .... arg8
+	Echo ''
+	Echo Currently limited to 8 arguments after function
+	Echo Cannot time longer than 1 day
+	Echo Accuracy limited to 10ms increments
 
 	GOTO END
 
