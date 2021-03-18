@@ -8,10 +8,10 @@
 ::	10/03/2021	Added basic parse for switches
 ::	17/03/2021	Base function implemented
 ::	18/03/2021	Added Local backup switch option
+::			Added automatic backup of file on OWL
 
 ::To Do
 ::
-::	change sed to make a back up
 ::	Verify inputs??
 
 @echo off
@@ -56,6 +56,7 @@ GOTO parse
 :HELP
 	Echo OWL CLI Config editor utility
 	Echo This Script was created to get around the forbiden characters issue on the Hirschmann OWL 4G
+	Echo File being edited is backed up as filename.bak on OWL
 	Echo Usage:
 	Echo    OWL_Config_edit [-d -h -b] IPaddress Cfgfile Cfgline Cfgvalue
 	Echo    IPaddr = IP address of the OWL 4G eg 192.168.1.1
