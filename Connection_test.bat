@@ -8,6 +8,7 @@
 
 ::To Do
 ::
+::	Include output of missed pings to make it easier to see when connection drops
 
 @echo off
 setlocal enableextensions enabledelayedexpansion
