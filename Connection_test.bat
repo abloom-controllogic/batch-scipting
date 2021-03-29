@@ -8,8 +8,6 @@
 
 ::To Do
 ::
-::	Fill in help section
-::	Add looping to constant check
 
 @echo off
 setlocal enableextensions enabledelayedexpansion
@@ -17,7 +15,7 @@ set returnCode=0
 set outputfile=result.txt
 set gateway=N
 set internet=1.1.1.1
-set num_loop=999
+set num_loop=3600
 set time_out=30
 
 
