@@ -15,7 +15,6 @@
 ::	Add switches for deciding what options to put in
 :: 	Check if Script alread exists and add overwrite switch
 ::	Call notepad so console does not hang
-::	Fix static output location
 ::	Update template with new default switches
 
 @echo off
