@@ -5,6 +5,9 @@
 :: ###################################History#################################################
 ::	27/02/2021	Script Created
 ::	10/03/2021	Added basic parser for switches
+::	02/04/2021	Changed the default output directory to the current directory
+::			Added switch for output directory
+
 
 ::To Do
 ::
@@ -18,7 +21,7 @@
 @echo off
 setlocal enableextensions enabledelayedexpansion
 set returnCode=0
-
+set outputdir=.
 
 if "%*" EQU "" (
 	echo No Input provided
@@ -31,6 +34,7 @@ if "%in1:~0,1%" NEQ "-" GOTO endparse
 if "%in1%" EQU "-d" set debug=Y
 if "%in1%" EQU "-h" GOTO HELP
 if "%in1%" EQU "-l" GOTO LIST
+if "%in1%" EQU "-o" (set outputdir=%2 && SHIFT)
 SHIFT
 GOTO parse
 
@@ -41,7 +45,7 @@ GOTO parse
 		echo Debugging by echoing commands
 		@echo on
 	)
-	TYPE "%MYUTILITIES%\Scripts\bat_template.bat" >"%MYUTILITIES%\Scripts\%1.bat" && echo %1.bat created && notepad "%MYUTILITIES%\Scripts\%1.bat"
+	TYPE "%MYUTILITIES%\Scripts\bat_template.bat" >"%outputdir%\%1.bat" && echo %1.bat created && notepad "%outputdir%\%1.bat"
 
 
 	GOTO END
