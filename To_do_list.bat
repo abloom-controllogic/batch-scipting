@@ -3,13 +3,15 @@
 ::Batch Script
 
 :: ###################################History#################################################
-::	29/03/2020	Script Created via bat_template
+::	29/03/2021	Script Created via bat_template
+::	06/04/2021	Psudeo Code  for base functionality
 
 ::To Do
 ::
 ::	Fill in help section
 ::	Implement base fuctionality
 ::	Intergrate into git-hooks
+
 
 @echo off
 setlocal enableextensions enabledelayedexpansion
@@ -37,7 +39,19 @@ GOTO parse
 		echo Debugging by echoing commands
 		@echo on
 	)
-	::Write your scripting here
+	echo To Do List >> ToDoList.md
+	FOR /F %%a IN 'dir /A:-D /B' do (
+		FOR %%i lines in %%a do (
+			IF !ToDofound! AND line starts with "::" (
+				echo %%i >>ToDoList.md
+			) ELSE ( set ToDofound=0
+			IF :: Line is "::To Do" (
+				echo %%a >> ToDoList.md
+				echo %%i >> ToDoList.md
+				sert ToDofound=1
+			)
+		)
+	)
 	GOTO END
 
 :HELP
