@@ -1,0 +1,60 @@
+:: Control Logic SmartVPN Router config parser Batch file
+
+:: History
+::	30/07/2020 Intial Script Created - Aaron Bloom
+::	27/01/2021 
+
+::
+::
+@echo off
+echo This Batch file is meant to convert .cfg files from to .ovpn
+
+set input=%1
+
+IF "%2"=="" (
+	SET output=output.ovpn
+	echo Output set to: %output%
+) ELSE (
+	set output=%2
+)
+
+
+::if Input is not *.cfg exit
+IF %input~x==.cfg (
+	echo Input is not a .cfg
+	exit /b
+)
+
+IF NOT EXIST %input% (
+	echo %input% does not exist
+	exit /b
+)
+
+::if output is not *.ovpn exit
+IF EXIST %output% (
+	::Delete existing file
+	DEL %output%
+	echo Tried to Delete
+)
+
+::Open input
+SETLOCAL ENABLEDELAYEDEXPANSION
+echo Starting Parse
+
+echo client >> %output%
+echo dev tun >> %output%
+
+FOR /F "skip=2 delims=" %%y in ('findstr /R /C:"OPENVPN.*=" %input%') DO (
+	SET temp=%%y
+	SET temp=!temp:OPENVPN=!
+
+	echo !temp:~0,10!
+	echo !temp:*.==!
+	IF /I "!temp:~0,6!"=="_PROTO" (
+		echo  !temp:~7!>>%output%
+	)
+	REM To Do setup a switch case based on the inputs DON"T FORGET to find the 
+)
+
+::echo %test:_SearchString=OPEN%
+::	value>>%output%
