@@ -72,14 +72,17 @@ GOTO parse
 
 	FOR /F "skip=2 delims=" %%y in ('findstr /R /C:"OPENVPN.*=" %input%') DO (
 		SET temp=%%y
-		SET temp=!temp:OPENVPN=!
+		SET temp=!temp:OPENVPN_=!
 
 		echo !temp:~0,10!
 		echo !temp:*.==!
-		IF /I "!temp:~0,6!"=="_PROTO" (
-			echo  !temp:~7!>>%output%
+		IF /I "!temp:~0,5!"=="PROTO" (
+			echo !temp:~6!>>%output%
+			echo PROTO Caught
 		)
-		REM To Do setup a switch case based on the inputs DON"T FORGET to find the 
+		REM	To Do setup a switch case based on the inputs DON"T FORGET to find the ?equals sign?
+		REM	Use the first 4 characters after striping off OPENVPN_
+		
 	)
 
 	::echo %test:_SearchString=OPEN%
