@@ -14,10 +14,11 @@
 ::	20/02/2021	Added in debug and help switches (Help not yet implemented)
 ::	10/03/2021	Added basic paser for switches
 ::			Defined no inputs as interactive mode
+::	
 			
 
 :: To do
-::	Check and fix feild captures (include current IP address?)
+::	Check and fix field captures (include current IP address?)
 ::	Rewrite tool in Powershell (Netsh not guaranteed in future Windows)
 ::	More commenting
 ::	Change adapter selection to a choice
@@ -157,8 +158,17 @@ if "!client_type!" == "D" (
 	netsh interface ip set address name=%ETH_IF% static !IP_addr! !Mask! !GW!
 )
 
+GOTO END
+
 :HELP
-	Echo Help Section not yet implemented
+	Echo CLI tool to change IP address
+	Echo This script will allow you to set static or DHCP client address and gateway of any of the current adapter.
+	Echo hanges occur via netsh commands so script must be run as admin and should return an error if run as non-admin.
+	Echo Usage:
+	Echo	interface_set [-d -h]
+	Echo Switch Options:
+	Echo	-d = Debug script by changing ECHO to ON
+	Echo    -h = Display this help info
 
 	GOTO END
 
