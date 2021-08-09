@@ -93,6 +93,10 @@ GOTO parse
 	Echo Help Section not yet implemented
 	echo This Batch file is meant to convert .cfg files from to .ovpn
 	Echo Usage: cfgTOovpn.bat <switches> input.cfg output.ovpn
+	Echo Switches:
+	Echo           -d = echo output for debugging
+	Echo           -h = Display this Help section
+	Echo           
 	GOTO END
 
 :END
