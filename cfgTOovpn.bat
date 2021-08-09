@@ -76,6 +76,8 @@ GOTO parse
 
 		echo !temp:~0,10!
 		echo !temp:*.==!
+		GOTO !temp:~0,4!
+			REM This will set ErrorLevel = 1 if Label does not exist
 		IF /I "!temp:~0,5!"=="PROTO" (
 			echo !temp:~6!>>%output%
 			echo PROTO Caught
@@ -83,6 +85,10 @@ GOTO parse
 		REM	To Do setup a switch case based on the inputs DON"T FORGET to find the ?equals sign?
 		REM	Use the first 4 characters after striping off OPENVPN_
 		
+
+
+
+		:FOR_END
 	)
 
 	::echo %test:_SearchString=OPEN%
