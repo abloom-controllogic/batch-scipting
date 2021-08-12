@@ -10,6 +10,7 @@
 ::
 ::	Parse basic config
 ::	Include all openVPN config options
+::	Fix help section echo
 
 
 @echo off
@@ -59,7 +60,7 @@ GOTO parse
 	IF EXIST %output% (
 		::Delete existing file
 		DEL %output%
-		echo Tried to Delete
+		echo Tried to Delete output
 	)
 
 
@@ -84,7 +85,7 @@ GOTO parse
 		:ENABLED
 			GOTO FOR_END
 		
-		:PROTO
+		:PROT
 		IF /I "!temp:~0,5!"=="PROTO" (
 			echo !temp:~6!>>%output%
 			echo PROTO Caught
@@ -118,6 +119,7 @@ GOTO parse
 				GOTO FOR_END
 			:IF_IPADDR6
 				GOTO FOR_END
+		
 		:LOCAL_IF_IPADDR
 			GOTO FOR_END
 		:LOCAL_IF_IPADDR6
@@ -157,6 +159,7 @@ GOTO parse
 
 
 		:FOR_END
+			REM Line cannot be empty
 	)
 
 	::echo %test:_SearchString=OPEN%
@@ -164,9 +167,8 @@ GOTO parse
 	GOTO END
 
 :HELP
-	Echo Help Section not yet implemented
-	echo This Batch file is meant to convert .cfg files from to .ovpn
-	Echo Usage: cfgTOovpn.bat <switches> input.cfg output.ovpn
+	Echo This Batch file is meant to convert .cfg files from to .ovpn
+	Echo "Usage- cfgTOovpn <switches> input.cfg output.ovpn"
 	Echo Switches:
 	Echo           -d = echo output for debugging
 	Echo           -h = Display this Help section
@@ -175,6 +177,7 @@ GOTO parse
 
 :END
 	::Pause to allow user to read output and exit
+	ENDLOCAL
 	PAUSE
 	echo Exiting!
 	exit /B !returnCode!
