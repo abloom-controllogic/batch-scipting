@@ -75,6 +75,9 @@ GOTO parse
 		SET temp=%%y
 		SET temp=!temp:OPENVPN_=!
 
+		REM	To Do setup a switch case based on the inputs DON"T FORGET to find the ?equals sign?
+		REM	Use the first 4 characters after striping off OPENVPN_
+
 		echo !temp:~0,10!
 		echo !temp:*.==!
 		GOTO !temp:~0,4!
@@ -86,15 +89,7 @@ GOTO parse
 			GOTO FOR_END
 		
 		:PROT
-		IF /I "!temp:~0,5!"=="PROTO" (
 			echo !temp:~6!>>%output%
-			echo PROTO Caught
-		)
-
-
-
-		REM	To Do setup a switch case based on the inputs DON"T FORGET to find the ?equals sign?
-		REM	Use the first 4 characters after striping off OPENVPN_
 			GOTO FOR_END		
 		:DESCRIPTION
 			GOTO FOR_END
