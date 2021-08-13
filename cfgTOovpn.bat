@@ -71,7 +71,7 @@ GOTO parse
 	echo client >> %output%
 	echo dev tun >> %output%
 
-	FOR /F "skip=2 delims=" %%y in ('findstr /R /C:"OPENVPN.*=" %input%') DO (
+	FOR /F delims^=^ eol^= %%y in ('findstr /R /C:"OPENVPN.*=" %input%') DO (
 		SET temp=%%y
 		SET temp=!temp:OPENVPN_=!
 
@@ -80,15 +80,18 @@ GOTO parse
 
 		echo !temp:~0,10!
 		echo !temp:*.==!
-		GOTO !temp:~0,4!
+		::GOTO !temp:~0,4!
 			REM This will set ErrorLevel = 1 if Label does not exist
 		GOTO FOR_END
 			REM Label not found go to end of loop
 
-		:ENABLED
+		:ENAB
+			::ENABLED
+			echo #Config Enabled=!temp:~8!>>%output%
 			GOTO FOR_END
 		
 		:PROT
+			::PROTOCOL
 			echo !temp:~6!>>%output%
 			GOTO FOR_END		
 		:DESCRIPTION
@@ -154,6 +157,7 @@ GOTO parse
 
 
 		:FOR_END
+			echo At End
 			REM Line cannot be empty
 	)
 
