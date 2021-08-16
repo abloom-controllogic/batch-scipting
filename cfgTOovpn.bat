@@ -80,85 +80,38 @@ GOTO parse
 
 		echo !temp:~0,10!
 		echo !temp:*.==!
-		::GOTO !temp:~0,4!
-			REM This will set ErrorLevel = 1 if Label does not exist
-		GOTO FOR_END
-			REM Label not found go to end of loop
-
-		:ENAB
-			::ENABLED
-			echo #Config Enabled=!temp:~8!>>%output%
-			GOTO FOR_END
 		
-		:PROT
-			::PROTOCOL
-			echo !temp:~6!>>%output%
-			GOTO FOR_END		
-		:DESCRIPTION
-			GOTO FOR_END
-		:PORT
-			GOTO FOR_END
-		:REMOTE
-			REM Find remote sub category
-			
-			GOTO !REMOTE_SUB!
-			GOTO FOR_END
-			:IPADDR
-				GOTO FOR_END
-			:NETWORK
-				GOTO FOR_END
-			:NETMASK
-				GOTO FOR_END
-			:IF_IPADDR
-				GOTO FOR_END
-			:NETWORK6
-				GOTO FOR_END
-			:PREFIX6
-				GOTO FOR_END
-			:IF_IPADDR6
-				GOTO FOR_END
-		
-		:LOCAL_IF_IPADDR
-			GOTO FOR_END
-		:LOCAL_IF_IPADDR6
-			GOTO FOR_END
-		:REDIRECT_GW
-			GOTO FOR_END
-		:PING_INTVL
-			GOTO FOR_END
-		:PING_TOUT
-			GOTO FOR_END
-		:RENEG_SEC
-			GOTO FOR_END
-		:FRAGMENT
-			GOTO FOR_END
-		:COMP
-			GOTO FOR_END
-		:NAT
-			GOTO FOR_END
-		:AUTH
-			GOTO FOR_END
-		:SECRET
-			GOTO FOR_END
-		:CA_CERT
-			GOTO FOR_END
-		:DH_PARAMS
-			GOTO FOR_END
-		:LOCAL_CERT
-			GOTO FOR_END
-		:LOCAL_KEY
-			GOTO FOR_END
-		:USERNAME
-			GOTO FOR_END
-		:PASSWORD
-			GOTO FOR_END
-		:EXTRA_OPTS
-			GOTO FOR_END
 
+		IF /I "!temp:~0,7!"=="ENABLED" echo #Config Enabled=!temp:~8!>>%output%
+		IF /I "!temp:~0,5!"=="PROTO" echo !temp:~6!>>%output%
+		IF /I "!temp:~0,11!"=="DESCRIPTION" echo #!temp:~12!>>%output%
+		IF /I "!temp:~0,4!"=="PORT" echo !temp:~5!>>%output%
+		IF /I "!temp:~0,13!"=="REMOTE_IPADDR" echo !temp:~14!>>%output%
+		IF /I "!temp:~0,14!"=="REMOTE_NETWORK" echo !temp:~15!>>%output%
+		IF /I "!temp:~0,14!"=="REMOTE_NETMASK" echo !temp:~15!>>%output%
+		IF /I "!temp:~0,16!"=="REMOTE_IF_IPADDR" echo !temp:~17!>>%output%
+		IF /I "!temp:~0,15!"=="REMOTE_NETWORK6" echo !temp:~16!>>%output%
+		IF /I "!temp:~0,14!"=="REMOTE_PREFIX6" echo !temp:~15!>>%output%
+		IF /I "!temp:~0,17!"=="REMOTE_IF_IPADDR6" echo !temp:~18!>>%output%
+		IF /I "!temp:~0,15!"=="LOCAL_IF_IPADDR" echo !temp:~16!>>%output%
+		IF /I "!temp:~0,16!"=="LOCAL_IF_IPADDR6" echo !temp:~17!>>%output%
+		IF /I "!temp:~0,11!"=="REDIRECT_GW" echo !temp:~12!>>%output%
+		IF /I "!temp:~0,10!"=="PING_INTVL" echo !temp:~11!>>%output%
+		IF /I "!temp:~0,9!"=="PING_TOUT" echo !temp:~10!>>%output%
+		IF /I "!temp:~0,9!"=="RENEG_SEC" echo !temp:~10!>>%output%
+		IF /I "!temp:~0,8!"=="FRAGMENT" echo !temp:~9!>>%output%
+		IF /I "!temp:~0,4!"=="COMP" echo !temp:~5!>>%output%
+		IF /I "!temp:~0,3!"=="NAT" echo !temp:~4!>>%output%
+		IF /I "!temp:~0,4!"=="AUTH" echo !temp:~5!>>%output%
+		IF /I "!temp:~0,6!"=="SECRET" echo !temp:~17!>>%output%
+		IF /I "!temp:~0,7!"=="CA_CERT" echo !temp:~8!>>%output%
+		IF /I "!temp:~0,9!"=="DH_PARAMS" echo !temp:~10!>>%output%
+		IF /I "!temp:~0,10!"=="LOCAL_CERT" echo !temp:~11!>>%output%
+		IF /I "!temp:~0,9!"=="LOCAL_KEY" echo !temp:~10!>>%output%
+		IF /I "!temp:~0,8!"=="USERNAME" echo !temp:~9!>>%output%
+		IF /I "!temp:~0,8!"=="PASSWORD" echo !temp:~18!>>%output%
+		IF /I "!temp:~0,10!"=="EXTRA_OPTS" echo !temp:~11!>>%output%
 
-		:FOR_END
-			echo At End
-			REM Line cannot be empty
 	)
 
 	::echo %test:_SearchString=OPEN%
