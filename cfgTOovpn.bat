@@ -72,6 +72,7 @@ GOTO parse
 	echo dev tun >> %output%
 
 	FOR /F delims^=^ eol^= %%y in ('findstr /R /C:"OPENVPN.*=" %input%') DO (
+
 		SET temp=%%y
 		SET temp=!temp:OPENVPN_=!
 
@@ -104,15 +105,40 @@ GOTO parse
 		IF /I "!temp:~0,3!"=="NAT" echo !temp:~4!>>%output%
 		IF /I "!temp:~0,4!"=="AUTH" echo !temp:~5!>>%output%
 		IF /I "!temp:~0,6!"=="SECRET" echo !temp:~17!>>%output%
-		IF /I "!temp:~0,7!"=="CA_CERT" echo !temp:~8!>>%output%
+		echo cert section
+		IF /I "!temp:~0,7!"=="CA_CERT" (
+			echo !temp:~8! > %TEMP%\cfgTObat.base64
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			echo ^<ca^> >>%output%
+			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
+				echo %%D >>%output%
+			)
+			echo ^</ca^> >>%output%
+		)
 		IF /I "!temp:~0,9!"=="DH_PARAMS" echo !temp:~10!>>%output%
-		IF /I "!temp:~0,10!"=="LOCAL_CERT" echo !temp:~11!>>%output%
-		IF /I "!temp:~0,9!"=="LOCAL_KEY" echo !temp:~10!>>%output%
+		IF /I "!temp:~0,10!"=="LOCAL_CERT" (
+			echo !temp:~11! > %TEMP%\cfgTObat.base64
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			echo ^<cert^> >>%output%
+			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
+				echo %%D >>%output%
+			)
+			echo ^</cert^> >>%output%
+		)
+		IF /I "!temp:~0,9!"=="LOCAL_KEY" (
+			echo !temp:~10! > %TEMP%\cfgTObat.base64
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			echo ^<key^> >>%output%
+			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
+				echo %%D >>%output%
+			)
+			echo ^</key^> >>%output%
+		)
 		IF /I "!temp:~0,8!"=="USERNAME" echo !temp:~9!>>%output%
 		IF /I "!temp:~0,8!"=="PASSWORD" echo !temp:~18!>>%output%
 		IF /I "!temp:~0,10!"=="EXTRA_OPTS" echo !temp:~11!>>%output%
-
 	)
+	del %TEMP%\cfgTObat.output %TEMP%\cfgTObat.base64
 
 	::echo %test:_SearchString=OPEN%
 	::	value>>%output%
