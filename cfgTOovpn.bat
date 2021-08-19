@@ -75,12 +75,6 @@ GOTO parse
 
 		SET temp=%%y
 		SET temp=!temp:OPENVPN_=!
-
-		REM	To Do setup a switch case based on the inputs DON"T FORGET to find the ?equals sign?
-		REM	Use the first 4 characters after striping off OPENVPN_
-
-		echo !temp:~0,10!
-		echo !temp:*.==!
 		
 
 		IF /I "!temp:~0,7!"=="ENABLED" echo #Config Enabled=!temp:~8!>>%output%
@@ -105,10 +99,9 @@ GOTO parse
 		IF /I "!temp:~0,3!"=="NAT" echo !temp:~4!>>%output%
 		IF /I "!temp:~0,4!"=="AUTH" echo !temp:~5!>>%output%
 		IF /I "!temp:~0,6!"=="SECRET" echo !temp:~17!>>%output%
-		echo cert section
 		IF /I "!temp:~0,7!"=="CA_CERT" (
 			echo !temp:~8! > %TEMP%\cfgTObat.base64
-			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output > NUL
 			echo ^<ca^> >>%output%
 			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
 				echo %%D >>%output%
@@ -118,7 +111,7 @@ GOTO parse
 		IF /I "!temp:~0,9!"=="DH_PARAMS" echo !temp:~10!>>%output%
 		IF /I "!temp:~0,10!"=="LOCAL_CERT" (
 			echo !temp:~11! > %TEMP%\cfgTObat.base64
-			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output > NUL
 			echo ^<cert^> >>%output%
 			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
 				echo %%D >>%output%
@@ -127,7 +120,7 @@ GOTO parse
 		)
 		IF /I "!temp:~0,9!"=="LOCAL_KEY" (
 			echo !temp:~10! > %TEMP%\cfgTObat.base64
-			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output
+			certutil -f -decode %TEMP%\cfgTObat.base64 %TEMP%\cfgTObat.output > NUL
 			echo ^<key^> >>%output%
 			FOR /F delims^=^ eol^= %%D in ('type %TEMP%\cfgTObat.output') DO (
 				echo %%D >>%output%
@@ -138,10 +131,9 @@ GOTO parse
 		IF /I "!temp:~0,8!"=="PASSWORD" echo !temp:~18!>>%output%
 		IF /I "!temp:~0,10!"=="EXTRA_OPTS" echo !temp:~11!>>%output%
 	)
-	del %TEMP%\cfgTObat.output %TEMP%\cfgTObat.base64
+	echo Removing temporary files
+	del /F %TEMP%\cfgTObat.output %TEMP%\cfgTObat.base64 2>NUL
 
-	::echo %test:_SearchString=OPEN%
-	::	value>>%output%
 	GOTO END
 
 :HELP
