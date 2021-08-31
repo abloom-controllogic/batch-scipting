@@ -104,7 +104,7 @@ GOTO parse
 		)
 		IF /I "!temp:~0,9!"=="RENEG_SEC" echo reneg-sec !temp:~10!>>%output%
 		IF /I "!temp:~0,8!"=="FRAGMENT" echo fragment !temp:~9!>>%output%
-		IF /I "!temp:~0,4!"=="COMP" echo !temp:~5!>>%output%
+		IF /I "!temp:~0,4!"=="COMP" echo compress !temp:~5!>>%output%
 		IF /I "!temp:~0,3!"=="NAT" (
 			IF /I "!temp:~4!"=="1" echo ##NAT Needs to be applied - Yet to be implemented>>%output%
 		)
@@ -196,7 +196,12 @@ GOTO parse
 		IF /I "!temp:~0,8!"=="USERNAME" echo !temp:~9!>>auth.txt
 		IF /I "!temp:~0,8!"=="PASSWORD" echo !temp:~18!>>auth.txt
 		::Outputing in double quotes
-		IF /I "!temp:~0,10!"=="EXTRA_OPTS" echo !temp:~11!>>%output%
+		IF /I "!temp:~0,10!"=="EXTRA_OPTS" (
+			SET options=!temp:~12,-1!
+			echo !options:--=^
+
+!>>%output%
+		)
 	)
 	echo Removing temporary files
 	del /F %TEMP%\cfgTObat.output %TEMP%\cfgTObat.base64 2>NUL
